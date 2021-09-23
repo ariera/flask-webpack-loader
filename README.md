@@ -17,6 +17,16 @@ app.py
 ```python
 from flask_webpack_loader import WebpackLoader
 
+WEBPACK_LOADER = {
+    'BUNDLE_DIR_NAME': os.path.join('static', 'bundles'),
+    'STATIC_URL': 'static',
+    'STATS_FILE': 'webpack-stats.prod.json',
+    'POLL_INTERVAL': 0.1,
+    'TIMEOUT': None,
+    'IGNORES': [re.compile(r'.+\.hot-update.js'), re.compile(r'.+\.map')]
+}
+
+app.config['WEBPACK_LOADER'] = WEBPACK_LOADER
 webpack_loader = WebpackLoader(app)
 ```
 
@@ -27,17 +37,4 @@ template.html
     # webpack 4+
     {{ render_bundle('runtime~main') | safe }}
     {{ render_bundle('undefined') | safe }}
-```
-
-## Configuration
-
-```python
-WEBPACK_LOADER = {
-    'BUNDLE_DIR_NAME': os.path.join('static', 'bundles'),
-    'STATIC_URL': 'static',
-    'STATS_FILE': 'webpack-stats.prod.json',
-    'POLL_INTERVAL': 0.1,
-    'TIMEOUT': None,
-    'IGNORES': [re.compile(r'.+\.hot-update.js'), re.compile(r'.+\.map')]
-}
 ```
