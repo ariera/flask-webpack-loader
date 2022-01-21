@@ -145,8 +145,9 @@ class WebpackLoader(object):
             if chunks is None:
                 raise WebpackBundleLookupError('Cannot resolve bundle {0}.'.format(bundle_name))
             for chunk in chunks:
-                asset = assets['assets'][chunk]
-                if asset is None:
+                asset = assets['assets'].get(chunk, None)
+                ignore = any(regex.match(chunk) for regex in self.config.get('IGNORES', []))
+                if asset is None and not ignore:
                     raise WebpackBundleLookupError('Cannot resolve asset {0}.'.format(chunk))
             return self.filter_chunks(chunks)
 
